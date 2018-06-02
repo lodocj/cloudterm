@@ -86,7 +86,7 @@ public class TerminalService {
 
         ThreadHelper.start(() -> {
         		try {
-					outputWriter.write("/data/apps/spark/bin/spark-sql");
+					outputWriter.write("/data/apps/spark/bin/spark-sql \r");
 					outputWriter.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
