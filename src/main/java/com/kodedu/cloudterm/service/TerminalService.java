@@ -66,6 +66,7 @@ public class TerminalService {
             this.termCommand = "cmd.exe".split("\\s+");
         } else {
             this.termCommand = "/bin/bash -i".split("\\s+");
+//        		this.termCommand = "ls /".split("\\s+");
         }
 
         if(Objects.nonNull(shellStarter)){
@@ -78,11 +79,19 @@ public class TerminalService {
         System.setProperty("PTY_LIB_FOLDER", dataDir.resolve("libpty").toString());
 
         this.process = PtyProcess.exec(termCommand, envs, userHome);
-
         process.setWinSize(new WinSize(columns, rows));
         this.inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         this.errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         this.outputWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+
+        ThreadHelper.start(() -> {
+        		try {
+					outputWriter.write("/data/apps/spark/bin/spark-sql");
+					outputWriter.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        });
 
         ThreadHelper.start(() -> {
             printReader(inputReader);

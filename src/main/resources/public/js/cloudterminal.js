@@ -37,8 +37,7 @@ t.onTerminalReady = function () {
     };
 
     t.installKeyboard();
-    app.onTerminalReady();
-
+    app.onTerminalReady();    
 };
 
 let ws = new WebSocket("ws://" + location.host + "/terminal");
